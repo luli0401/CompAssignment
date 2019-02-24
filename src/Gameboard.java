@@ -110,29 +110,72 @@ public class Gameboard
 			start = row;
 			tiles = extractColumn(col);
 		}
+		else if (direction == RIGHT)
+		{
+			start = col;
+			tiles = extractRow(row);
+		}
+		else if (direction == LEFT)
+		{
+			start = gameboard.length - 1 - col;
+			tiles = extractRow(row);
+			reverse(tiles);
+		}
 
 		canAddShip = canPlaceShipInArray(tiles, start, length);
 
+		if(canAddShip)
+		{
+			placeShipInArray(tiles, start, length, display);
+		}
+		
 		return canAddShip;
 	}
-
+	
+	private static void placeShipInArray(Tile [] tiles, int start, int length, char letter) 
+	{
+		for (int i = start; i < (start + length); i++)
+		{
+			tiles[i].setDisplayLetter(letter); 
+		}
+	}
+	
 	private static boolean canPlaceShipInArray(Tile[] tiles, int start, int length)
 	{
-		boolean canAddShip = true;
-
-		if ((start + length) >= tiles.length)
+		boolean canAddShip = true;		
+		
+		if ((start + length) > tiles.length)
 		{
 			canAddShip = false;
-		}
-
-		for (int i = 0; i < tiles.length; i++)
+		}		
+		else
 		{
-			if (!tiles[i].canPlaceShip())
+			for (int i = start; i < length; i++)
 			{
-				canAddShip = false;
+				if (!tiles[i].canPlaceShip())
+				{
+					canAddShip = false;
+				}
 			}
 		}
-
 		return canAddShip;
+	}
+	
+	public boolean hasLost()
+	{
+		boolean lost = true;
+		
+		for (int i = 0; i < gameboard.length; i++)
+		{
+			for (int j = 0; j < gameboard[i].length; j++)
+			{
+				if(gameboard[i][j].activeShip()) 
+				{
+					lost = false;
+				}
+			}
+		}
+		
+		return lost;
 	}
 }

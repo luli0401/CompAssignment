@@ -17,5 +17,7 @@ public class ATestClass
 			data[i] = data[data.length - i - 1];
 			data[data.length - i - 1] = temp;
 		}
+		
+		System.out.print("DONE");
 	}
 }
