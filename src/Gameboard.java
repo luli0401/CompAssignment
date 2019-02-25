@@ -1,6 +1,7 @@
-
+// Gameboard class. contain a two-dimensional array of Tile objects, creating a game board for a single player
 public class Gameboard
 {
+	// instance variables
 	Tile[][] gameboard;
 	boolean isOpponent;
 
@@ -9,6 +10,7 @@ public class Gameboard
 	public static final int LEFT = 2;
 	public static final int RIGHT = -2;
 
+	// Constructor
 	public Gameboard(int row, int column, boolean isOpponent)
 	{
 		gameboard = new Tile[row][column];
@@ -24,6 +26,7 @@ public class Gameboard
 		this.isOpponent = isOpponent;
 	}
 
+	// returns a string representation of the entire gameboard
 	public String toString()
 	{
 		String gameBoardString = "";
@@ -40,6 +43,7 @@ public class Gameboard
 		return gameBoardString;
 	}
 
+	// fetches row rowNum from the board, returning it as a String
 	public String getRow(int rowNum)
 	{
 		String rowString = "";
@@ -52,11 +56,17 @@ public class Gameboard
 		return rowString;
 	}
 
+	// sets the isAttacked flag on the tile at index row, column
 	public void doAttack(int row, int column)
 	{
-		gameboard[row][column].attack();
+		if(row >= 0 && row < gameboard.length &&
+				column >= 0 && column < gameboard[row].length)
+		{
+			gameboard[row][column].attack();
+		}
 	}
 
+	// returns a Tile array containing the contents of the specified row
 	public Tile[] extractRow(int row)
 	{
 		Tile[] tileArray = new Tile[gameboard[row].length];
@@ -69,6 +79,7 @@ public class Gameboard
 		return tileArray;
 	}
 
+	// returns a Tile array containing the contents of the specified column
 	public Tile[] extractColumn(int column)
 	{
 		Tile[] tileArray = new Tile[gameboard.length];
@@ -81,6 +92,7 @@ public class Gameboard
 		return tileArray;
 	}
 
+	// reverse the provided array
 	public static void reverse(Tile[] data)
 	{
 		Tile temp = null;
@@ -93,12 +105,14 @@ public class Gameboard
 		}
 	}
 
+	// adding ships to the board
 	public boolean addShip(int row, int col, int length, int direction, char display)
 	{
 		boolean canAddShip = true;
 		int start = 0;
 		Tile[] tiles = null;
 
+		// check the direction
 		if (direction == UP)
 		{
 			start = gameboard.length - 1 - row;
@@ -122,8 +136,10 @@ public class Gameboard
 			reverse(tiles);
 		}
 
+		// check if it can place a ship
 		canAddShip = canPlaceShipInArray(tiles, start, length);
 
+		// place the ship
 		if(canAddShip)
 		{
 			placeShipInArray(tiles, start, length, display);
@@ -132,6 +148,7 @@ public class Gameboard
 		return canAddShip;
 	}
 	
+	// adds a ship into this array
 	private static void placeShipInArray(Tile [] tiles, int start, int length, char letter) 
 	{
 		for (int i = start; i < (start + length); i++)
@@ -140,6 +157,7 @@ public class Gameboard
 		}
 	}
 	
+	// checks to see if a ship could be placed in this array
 	private static boolean canPlaceShipInArray(Tile[] tiles, int start, int length)
 	{
 		boolean canAddShip = true;		
@@ -161,6 +179,7 @@ public class Gameboard
 		return canAddShip;
 	}
 	
+	// returns true if the player has lost
 	public boolean hasLost()
 	{
 		boolean lost = true;
