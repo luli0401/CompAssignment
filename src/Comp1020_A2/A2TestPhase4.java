@@ -1,3 +1,4 @@
+package Comp1020_A2;
 
 public class A2TestPhase4 {
 	public static void main (String [] args) {

@@ -1,3 +1,4 @@
+package Comp1020_A2;
 // Gameboard class. contain a two-dimensional array of Tile objects, creating a game board for a single player
 public class Gameboard
 {

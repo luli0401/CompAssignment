@@ -1,3 +1,4 @@
+package Comp1020_A2;
 // Game class that has two or more players that take turns attacking the other player’s ships
 import java.util.Scanner;
 

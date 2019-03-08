@@ -1,3 +1,4 @@
+package Comp1020_A2;
 // Tile class, single space on the board
 public class Tile
 {
