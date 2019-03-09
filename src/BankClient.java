@@ -3,9 +3,9 @@ public class BankClient
 {
 	String firstName;
 	String lastName;
-	float id;
+	long id;
 
-	public BankClient(String firstName, String lastName, float id)
+	public BankClient(String firstName, String lastName, long id)
 	{
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -22,7 +22,7 @@ public class BankClient
 		return lastName;
 	}
 
-	public float getId()
+	public long getId()
 	{
 		return id;
 	}

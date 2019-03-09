@@ -12,7 +12,7 @@ public class Bank
 
 	public void addBankClient(String firstName, String lastName)
 	{
-		float bankClientId = (1020 * 1000000000000f) + index;
+		long bankClientId = (1020 * 1000000000000L) + index;
 		BankClient bankClient = new BankClient(firstName, lastName, bankClientId);
 
 		bankClientList[index] = bankClient;
