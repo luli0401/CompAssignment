@@ -1,10 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 
 public class Main
 {
-	public static void main(String[] args) throws WrongCommandException
+	public static void main(String[] args)
 	{
 		final String INPUT_FILE_NAME = "inputPhase3.txt";
 		Bank bank = new Bank();
@@ -39,9 +38,8 @@ public class Main
 		}
 	}
 
-	private static void parseCommand(String line, Bank bank) throws WrongCommandException
+	private static void parseCommand(String line, Bank bank)
 	{
-		// System.out.println(line);
 		String[] stringTokens = line.split("\\s+");
 
 		if (stringTokens[0].equals("#"))
@@ -50,16 +48,16 @@ public class Main
 		}
 		else if (stringTokens[0].equals("NEW-CLIENT"))
 		{
-			checkForInvalidCommandArgsException(stringTokens);
-			
-			bank.addBankClient(stringTokens[1], stringTokens[2]);
-			System.out.println("NEW CLIENT CREATED");
+			if(!hasInvalidCommandArgsException(stringTokens))
+			{
+				bank.addBankClient(stringTokens[1], stringTokens[2]);
+				System.out.println("NEW CLIENT CREATED");
+			}
 		}
 		else if (stringTokens[0].equals("GET-CLIENT-INFO"))
 		{
-//			checkForInvalidCommandArgsException(stringTokens);
-//			try
-//			{
+			if(!hasInvalidCommandArgsException(stringTokens))
+			{
 				BankClient bankClient = bank.getBankClient(stringTokens[1], stringTokens[2]);
 				if (bankClient != null)
 				{
@@ -69,21 +67,26 @@ public class Main
 				{
 					System.out.println("CLIENT NOT FOUND");
 				}
-//			}
-//			catch(Exception e)
-//			{
-//				throw new InvalidCommandArgsException("First or last name is missing.");
-//			}			
+			}
 		}
 		else
-		{
-			throw new WrongCommandException("The command "+ stringTokens[0] +" is not recognized.");
+		{			
+			Exception exception = new WrongCommandException("The command "+ stringTokens[0] +" is not recognized.");
+			System.out.println(exception);
 		}
 	}
 
-	private static void checkForInvalidCommandArgsException(String[] stringTokens) throws InvalidCommandArgsException
+	private static boolean hasInvalidCommandArgsException(String[] stringTokens)
 	{
-		throw new InvalidCommandArgsException("First or last name is missing.");		
+		boolean hasException = false;
+		
+		if(stringTokens.length < 3) 
+		{			
+			Exception exception = new InvalidCommandArgsException(stringTokens[0] + ": First or last name is missing.");
+			System.out.println(exception);
+			hasException = true;
+		}	
+		return hasException;
 	}
 
 	private static void processComment(String text)
