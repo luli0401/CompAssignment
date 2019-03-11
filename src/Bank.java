@@ -16,22 +16,26 @@ public class Bank
 		bankAccountIndex = 0;
 	}
 
-	public void addChequingAccount(BankClient bankClient, double balance)
+	public int addChequingAccount(BankClient bankClient, double balance)
 	{
 		int bankAccountId = (5 * 100000) + bankAccountIndex;
 		ChequingAccount chequingAccount = new ChequingAccount(bankClient, balance, bankAccountId);
 		
 		bankAccountList[bankAccountIndex] = chequingAccount;
-		bankAccountIndex++;
+		bankAccountIndex++;		
+		
+		return bankAccountId;
 	}
 	
-	public void addSavingsAccount(BankClient bankClient, double balance)
+	public int addSavingsAccount(BankClient bankClient, double balance)
 	{
 		int bankAccountId = (5 * 100000) + bankAccountIndex;
 		SavingsAccount savingAccount = new SavingsAccount(bankClient, balance, bankAccountId);
 		
 		bankAccountList[bankAccountIndex] = savingAccount;
 		bankAccountIndex++;
+	
+		return bankAccountId;
 	}
 	
 	public BankAccount getBankAccount(int accountId)
@@ -40,9 +44,18 @@ public class Bank
 		
 		for (int i = 0; i < bankAccountIndex; i++)
 		{
+//			if(accountId == 500002)
+//			{
+//				System.out.println("-----------"+ bankAccountList[i].getAccountId()+"-----------");
+//			}
+			
 			if (bankAccountList[i].getAccountId() == accountId)
 			{
 				bankAccount = bankAccountList[i];
+//				if(accountId == 500002)
+//				{
+//					System.out.println("-----------FOUND FOUND-----------");
+//				}
 			}
 		}
 		
