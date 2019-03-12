@@ -8,19 +8,17 @@ public class ChequingAccount extends BankAccount {
 		super(owner, balance, accountId);
 	}
 
-	public void withdraw(double amount) 
+	public void withdraw(double amount) throws InsufficientFundsException 
 	{
-		super.withdraw(amount);
-		
-		if(balance >= TRANSACTION_FEE)
+		if(balance >= amount)
 		{
-			balance -= TRANSACTION_FEE;
+			balance -= amount;
+			balance -= TRANSACTION_FEE;		
 		}
 		else
 		{
-			Exception exception = new InsufficientFundsException("Insufficient funds for the withdrawal.");
-			System.out.println(exception);
-		}
+			throw new InsufficientFundsException("Insufficient funds for the withdrawal.");
+		}		
 	}
 	
 	public String toString() 

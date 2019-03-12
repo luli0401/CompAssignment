@@ -43,19 +43,10 @@ public class Bank
 		BankAccount bankAccount = null;
 		
 		for (int i = 0; i < bankAccountIndex; i++)
-		{
-//			if(accountId == 500002)
-//			{
-//				System.out.println("-----------"+ bankAccountList[i].getAccountId()+"-----------");
-//			}
-			
+		{			
 			if (bankAccountList[i].getAccountId() == accountId)
 			{
 				bankAccount = bankAccountList[i];
-//				if(accountId == 500002)
-//				{
-//					System.out.println("-----------FOUND FOUND-----------");
-//				}
 			}
 		}
 		

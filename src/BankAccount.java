@@ -32,7 +32,7 @@ public abstract class BankAccount {
 		balance += amount;
 	}
 	
-	public void withdraw(double amount) 
+	public void withdraw(double amount) throws InsufficientFundsException 
 	{
 		if(balance >= amount)
 		{
@@ -40,8 +40,7 @@ public abstract class BankAccount {
 		}
 		else
 		{
-			Exception exception = new InsufficientFundsException("Insufficient funds for the withdrawal.");
-			System.out.println(exception);
+			throw new InsufficientFundsException("Insufficient funds for the withdrawal.");
 		}
 	}
 	
