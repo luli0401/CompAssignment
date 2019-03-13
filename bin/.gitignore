@@ -1,10 +1,11 @@
+/ATestClass.class
 /Bank.class
+/BankAccount.class
 /BankClient.class
+/ChequingAccount.class
 /Comp1020_A2/
+/InsufficientFundsException.class
 /InvalidCommandArgsException.class
 /Main.class
-/WrongCommandException.class
-/BankAccount.class
-/ChequingAccount.class
 /SavingsAccount.class
-/InsufficientFundsException.class
+/WrongCommandException.class

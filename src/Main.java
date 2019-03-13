@@ -1,16 +1,22 @@
+//Main Class
 import java.io.BufferedReader;
 import java.io.FileReader;
 
 public class Main
 {
+	//Main method
 	public static void main(String[] args)
 	{
+		//String constant
 		final String INPUT_FILE_NAME = "inputPhase4.txt";
 		Bank bank = new Bank();
 
+		//Read file
 		readInputFile(INPUT_FILE_NAME, bank);
 	}
 
+	// ReadInputFile method gets the filename as a parameter. This method should open the file for reading,
+	// read it line by line and call the following method (parseCommand) to process each line
 	private static void readInputFile(String fileName, Bank bank) 
 	{
 		BufferedReader reader;
@@ -18,9 +24,11 @@ public class Main
 
 		try
 		{
+			// read file
 			reader = new BufferedReader(new FileReader(fileName));
 			line = reader.readLine();
 
+			// process each line
 			while (line != null)
 			{
 				if (line.length() != 0)
@@ -38,6 +46,8 @@ public class Main
 		}
 	}
 
+	// ParseCommand method which receives one line of the file
+	// and determines which type of command this is. 
 	private static void parseCommand(String line, Bank bank)
 	{
 		String[] stringTokens = line.split("\\s+");
@@ -207,12 +217,14 @@ public class Main
 		}
 	}
 
+	// Print CommandArgsException 
 	private static void printCommandArgsException(String message)
 	{		
 		Exception exception = new InvalidCommandArgsException(message);
 		System.out.println(exception);	
 	}
 
+	// ProcessComment method which will handle a comment command
 	private static void processComment(String text)
 	{
 		System.out.println(text);

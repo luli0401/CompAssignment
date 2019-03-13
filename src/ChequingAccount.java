@@ -1,13 +1,17 @@
-
-public class ChequingAccount extends BankAccount {
-
+// ChequingAccount class extends BankAccount class
+public class ChequingAccount extends BankAccount 
+{
+	// Constant
 	private static final double TRANSACTION_FEE = 4.95;
 	
+	// Constructor
 	public ChequingAccount(BankClient owner, double balance, int accountId) 
 	{
 		super(owner, balance, accountId);
 	}
 
+	// overridden withdraw method, which will apply the transaction fee after 
+	// withdrawing the amount given as a parameter
 	public void withdraw(double amount) throws InsufficientFundsException 
 	{
 		if(balance >= amount)
@@ -21,6 +25,7 @@ public class ChequingAccount extends BankAccount {
 		}		
 	}
 	
+	// toString method
 	public String toString() 
 	{
 		return "Chequing Account id: " + accountId + "\n"
