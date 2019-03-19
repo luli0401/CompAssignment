@@ -1,3 +1,4 @@
+package Comp1020_A3;
 
 public class WrongCommandException extends Exception
 {	
