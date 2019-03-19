@@ -1,3 +1,4 @@
+package Comp1020_A3;
 // SavingsAccount class extends BankAccount class
 public class SavingsAccount extends BankAccount 
 {

@@ -1,3 +1,4 @@
+package Comp1020_A3;
 // ChequingAccount class extends BankAccount class
 public class ChequingAccount extends BankAccount 
 {
