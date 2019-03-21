@@ -1,8 +1,17 @@
 public class ATestClass
 {
+	
+	
 	public static void main(String[] args)
 	{
 		
+		Ship s = new Ship(5, 9);
+		
+		double x = s.getX();
+		
+		x -= 1;
+		
+		System.out.print(s.getX());
 	}
 
 	public static void reverse(int[] data)

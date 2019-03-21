@@ -1,3 +1,4 @@
+import java.awt.Color;
 
 public abstract class Sprite
 {
@@ -9,7 +10,7 @@ public abstract class Sprite
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public double getX()
 	{
 		return x;
@@ -18,5 +19,24 @@ public abstract class Sprite
 	public double getY()
 	{
 		return y;
+	}
+	
+	public void setX(double x)
+	{
+		this.x = x;
+	}
+	
+	public void setY(double y)
+	{
+		this.y = y;
+	}
+
+	public Color[][] getColorGrid()
+	{
+		return new Color[][]
+		{
+			{ null, null, null, null, null, Display.BLACK, null, null, null, null, null },
+			{ null, null, null, null, null, Display.BLACK, null, null, null, null, null } 
+		};
 	}
 }
