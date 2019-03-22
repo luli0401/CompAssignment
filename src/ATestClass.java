@@ -25,6 +25,6 @@ public class ATestClass
 			data[data.length - i - 1] = temp;
 		}
 		
-		System.out.print("DONE");
+		System.out.println("DONE");
 	}
 }

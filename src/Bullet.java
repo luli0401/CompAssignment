@@ -11,4 +11,9 @@ public class Bullet extends Sprite
 	{
 		return super.getColorGrid();
 	}
+
+	public void moveBullet(int bulletSpeed)
+	{
+		y -= bulletSpeed; 		
+	}
 }

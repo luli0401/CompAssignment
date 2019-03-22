@@ -11,4 +11,14 @@ public class Alien extends Sprite
 	{
 		return Display.ALIEN_SHAPE;
 	}
+
+	public void moveSideWay(int alienSpeed)
+	{
+		x += alienSpeed; 			
+	}
+
+	public void moveDown(int aliensSpeed)
+	{
+		y += aliensSpeed; 			
+	}
 }

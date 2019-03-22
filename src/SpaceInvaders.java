@@ -2,8 +2,11 @@ import java.util.ArrayList;
 
 public class SpaceInvaders
 {
-	static final int INITIAL_Y = 30;
-	static final int INITIAL_X = 20;
+	static final int INITIAL_X = 25;
+	static final int INITIAL_Y = 40;
+	static final int SHIP_SPEED = 10;
+	static final int BULLET_SPEED = 5;
+	static final int ALIENS_SPEED = 1;
 
 	int height;
 	int width;
@@ -23,33 +26,98 @@ public class SpaceInvaders
 
 	private void CreateAliens()
 	{
-		int x = 20;
-		int y = 0;
+		int alienX = 0;
+		int alienY = 0;
 		Alien alien = null;
 
 		for (int i = 0; i < 24; i++)
 		{
-			x += INITIAL_X * (i % 6);
+			alienY = INITIAL_X + INITIAL_X * (i % 4);
 
-			if ((i % 6) == 0)
+			if ((i % 4) == 0)
 			{
-				y += INITIAL_Y;
+				alienX += INITIAL_Y;
 			}
 
-			alien = new Alien(x, y);
+			alien = new Alien(alienX, alienY);
 			spriteList.add(alien);
 		}
 	}
 
 	private void CreateShip()
 	{
-		Ship playerShip = new Ship(height - 10, width / 2);
+		Ship playerShip = new Ship(height / 2, width - 70);
 		spriteList.add(playerShip);
 	}
 
 	public void update()
 	{
+		updateBullet();
+		moveAliens();
+	}
 
+	private void moveAliens()
+	{
+		ArrayList<Alien> alienList = getAllAliens();
+		int speed = ALIENS_SPEED;
+		
+		for (int i = 0; i < alienList.size(); i++)
+		{
+			alienList.get(i).moveSideWay(speed);
+
+			if (alienList.get(i).getX() < 0 || alienList.get(i).getX() > this.width)
+			{
+				speed = -speed;
+//				alienList.get(i).moveDown(ALIENS_SPEED);
+
+				System.out.println(alienList.get(i).getX() +" -- "+ speed);
+			}
+		}
+	}
+
+	private ArrayList<Alien> getAllAliens()
+	{
+		ArrayList<Alien> alienList = new ArrayList<Alien>();
+
+		for (int i = 0; i < spriteList.size(); i++)
+		{
+			if (spriteList.get(i) instanceof Alien)
+			{
+				alienList.add((Alien) spriteList.get(i));
+			}
+		}
+
+		return alienList;
+	}
+
+	private void updateBullet()
+	{
+		ArrayList<Bullet> bulletList = getAllBullets();
+
+		for (int i = 0; i < bulletList.size(); i++)
+		{
+			bulletList.get(i).moveBullet(BULLET_SPEED);
+
+			if (bulletList.get(i).getY() < 0)
+			{
+				spriteList.remove(bulletList.get(i));
+			}
+		}
+	}
+
+	private ArrayList<Bullet> getAllBullets()
+	{
+		ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
+
+		for (int i = 0; i < spriteList.size(); i++)
+		{
+			if (spriteList.get(i) instanceof Bullet)
+			{
+				bulletList.add((Bullet) spriteList.get(i));
+			}
+		}
+
+		return bulletList;
 	}
 
 	public ArrayList<Sprite> getItems()
@@ -79,11 +147,11 @@ public class SpaceInvaders
 
 		if (direction == Display.MOVE_LEFT)
 		{
-			x -= 5;
+			x -= SHIP_SPEED;
 		}
 		else
 		{
-			x += 5;
+			x += SHIP_SPEED;
 		}
 
 		playerShip.setX(x);
@@ -112,9 +180,9 @@ public class SpaceInvaders
 
 		if (count < 2)
 		{
-			bulletX = playerShip.getX() + 3.5;
-			bulletY = playerShip.getY();
-			
+			bulletX = playerShip.getX();
+			bulletY = playerShip.getY() - (playerShip.getColorGrid().length);
+
 			bullet = new Bullet(bulletX, bulletY);
 			spriteList.add(bullet);
 		}
