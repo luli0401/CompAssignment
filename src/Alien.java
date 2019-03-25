@@ -14,11 +14,11 @@ public class Alien extends Sprite
 
 	public void moveSideWay(int alienSpeed)
 	{
-		x += alienSpeed; 			
+		x += alienSpeed;
 	}
 
 	public void moveDown(int aliensSpeed)
 	{
-		y += aliensSpeed; 			
+		y += aliensSpeed;
 	}
 }

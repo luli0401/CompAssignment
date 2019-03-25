@@ -6,18 +6,25 @@ public class SpaceInvaders
 	static final int INITIAL_Y = 40;
 	static final int SHIP_SPEED = 10;
 	static final int BULLET_SPEED = 5;
-	static final int ALIENS_SPEED = 1;
+	static final int ALIEN_DOWN_SPEED = 15;
+	int alienSideSpeed = 1;
 
 	int height;
 	int width;
 	int status;
-	ArrayList<Sprite> spriteList;
+
+	Ship playerShip;
+	ArrayList<Alien> alienList;
+	ArrayList<Bullet> bulletList;
 
 	public SpaceInvaders(int height, int width)
 	{
 		this.height = height;
 		this.width = width;
-		this.spriteList = new ArrayList<Sprite>();
+
+		playerShip = null;
+		this.alienList = new ArrayList<Alien>();
+		this.bulletList = new ArrayList<Bullet>();
 		this.status = Display.CONTINUE;
 
 		CreateShip();
@@ -38,112 +45,152 @@ public class SpaceInvaders
 			{
 				alienX += INITIAL_Y;
 			}
-
+			
 			alien = new Alien(alienX, alienY);
-			spriteList.add(alien);
+			alienList.add(alien);
 		}
 	}
 
 	private void CreateShip()
 	{
-		Ship playerShip = new Ship(height / 2, width - 70);
-		spriteList.add(playerShip);
+		playerShip = new Ship(height / 2, width - 70);
 	}
 
 	public void update()
 	{
 		updateBullet();
 		moveAliens();
+		checkBulletHitAlien();
+	}
+
+	private void checkBulletHitAlien()
+	{
+		int bulletNum = -1;
+		int alienNum = -1;
+
+		for (int i = 0; i < bulletList.size(); i++)
+		{
+			for (int j = 0; j < alienList.size(); j++)
+			{
+				if (bulletList.get(i).getX() < (alienList.get(j).getX() + alienList.get(j).getColorGrid()[0].length * 2)
+						&& bulletList.get(i)
+								.getX() > (alienList.get(j).getX() - alienList.get(j).getColorGrid()[0].length * 2)
+						&& bulletList.get(i).getY() < (alienList.get(j).getY()) && bulletList.get(i)
+								.getY() > (alienList.get(j).getY() - alienList.get(j).getColorGrid().length))
+				{
+					bulletNum = i;
+					alienNum = j;
+				}
+			}
+		}
+
+		if (bulletNum != -1)
+		{
+			bulletList.remove(bulletNum);
+		}
+
+		if (alienNum != -1)
+		{
+			alienList.remove(alienNum);
+		}
 	}
 
 	private void moveAliens()
 	{
-		ArrayList<Alien> alienList = getAllAliens();
-		int speed = ALIENS_SPEED;
-		
+		boolean outOfSide = checkAnyAliensOutOfSide();
+
+		if (outOfSide)
+		{
+			alienSideSpeed = -alienSideSpeed;
+		}
+
 		for (int i = 0; i < alienList.size(); i++)
 		{
-			alienList.get(i).moveSideWay(speed);
+			alienList.get(i).moveSideWay(alienSideSpeed);
 
-			if (alienList.get(i).getX() < 0 || alienList.get(i).getX() > this.width)
+			if (outOfSide)
 			{
-				speed = -speed;
-//				alienList.get(i).moveDown(ALIENS_SPEED);
-
-				System.out.println(alienList.get(i).getX() +" -- "+ speed);
+				alienList.get(i).moveDown(ALIEN_DOWN_SPEED);
 			}
 		}
 	}
 
-	private ArrayList<Alien> getAllAliens()
+	private boolean checkAnyAliensOutOfSide()
 	{
-		ArrayList<Alien> alienList = new ArrayList<Alien>();
+		boolean outOfSide = false;
 
-		for (int i = 0; i < spriteList.size(); i++)
+		for (int i = 0; i < alienList.size(); i++)
 		{
-			if (spriteList.get(i) instanceof Alien)
+			if ((alienList.get(i).getX() - alienList.get(0).getColorGrid()[0].length) < 0
+					|| (alienList.get(i).getX() + alienList.get(0).getColorGrid()[0].length * 2) > this.width)
 			{
-				alienList.add((Alien) spriteList.get(i));
+				outOfSide = true;
 			}
 		}
 
-		return alienList;
+		return outOfSide;
 	}
 
 	private void updateBullet()
 	{
-		ArrayList<Bullet> bulletList = getAllBullets();
-
 		for (int i = 0; i < bulletList.size(); i++)
 		{
 			bulletList.get(i).moveBullet(BULLET_SPEED);
+		}
 
+		for (int i = 0; i < bulletList.size(); i++)
+		{
 			if (bulletList.get(i).getY() < 0)
 			{
-				spriteList.remove(bulletList.get(i));
+				bulletList.remove(bulletList.get(i));
 			}
 		}
-	}
-
-	private ArrayList<Bullet> getAllBullets()
-	{
-		ArrayList<Bullet> bulletList = new ArrayList<Bullet>();
-
-		for (int i = 0; i < spriteList.size(); i++)
-		{
-			if (spriteList.get(i) instanceof Bullet)
-			{
-				bulletList.add((Bullet) spriteList.get(i));
-			}
-		}
-
-		return bulletList;
 	}
 
 	public ArrayList<Sprite> getItems()
 	{
-		return spriteList;
+		ArrayList<Sprite> allItemList = new ArrayList<Sprite>();
+
+		allItemList.addAll(bulletList);
+		allItemList.addAll(alienList);
+		allItemList.add(playerShip);
+
+		return allItemList;
 	}
 
 	public int status()
 	{
+		if (alienList.size() == 0)
+		{
+			status = Display.WIN;
+		}
+
+		if (alienReachBottom())
+		{
+			status = Display.LOSE;
+		}
+
 		return status;
+	}
+
+	private boolean alienReachBottom()
+	{
+		boolean reachBottom = false;
+
+		for (int i = 0; i < alienList.size(); i++)
+		{
+			if (alienList.get(i).getY() + (4 * ALIEN_DOWN_SPEED) > height)
+			{
+				reachBottom = true;
+			}
+		}
+
+		return reachBottom;
 	}
 
 	public void move(int direction)
 	{
-		Ship playerShip = null;
-		double x = 0;
-
-		for (int i = 0; i < spriteList.size(); i++)
-		{
-			if (spriteList.get(i) instanceof Ship)
-			{
-				playerShip = (Ship) spriteList.get(i);
-			}
-		}
-
-		x = playerShip.getX();
+		double x = playerShip.getX();
 
 		if (direction == Display.MOVE_LEFT)
 		{
@@ -154,37 +201,32 @@ public class SpaceInvaders
 			x += SHIP_SPEED;
 		}
 
+		if (x < 0)
+		{
+			x = 0;
+		}
+
+		if (x > width - playerShip.getColorGrid()[0].length)
+		{
+			x = width - playerShip.getColorGrid()[0].length;
+		}
+
 		playerShip.setX(x);
 	}
 
 	public void shoot()
 	{
-		int count = 0;
 		double bulletX = 0;
 		double bulletY = 0;
 		Bullet bullet = null;
-		Ship playerShip = null;
 
-		for (int i = 0; i < spriteList.size(); i++)
-		{
-			if (spriteList.get(i) instanceof Bullet)
-			{
-				count++;
-			}
-
-			if (spriteList.get(i) instanceof Ship)
-			{
-				playerShip = (Ship) spriteList.get(i);
-			}
-		}
-
-		if (count < 2)
+		if (bulletList.size() < 2)
 		{
 			bulletX = playerShip.getX();
 			bulletY = playerShip.getY() - (playerShip.getColorGrid().length);
 
 			bullet = new Bullet(bulletX, bulletY);
-			spriteList.add(bullet);
+			bulletList.add(bullet);
 		}
 	}
 }
